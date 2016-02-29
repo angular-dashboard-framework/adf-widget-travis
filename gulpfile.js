@@ -1,3 +1,29 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2016, Sebastian Sdorra
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+'use strict';
+
 var gulp = require('gulp');
 var connect = require('gulp-connect');
 var wiredep = require('wiredep').stream;
@@ -20,19 +46,13 @@ var templateOptions = {
 
 /** lint **/
 
-gulp.task('csslint', function(){
-  gulp.src('src/**/*.css')
-      .pipe($.csslint())
-      .pipe($.csslint.reporter());
-});
-
 gulp.task('jslint', function(){
   gulp.src('src/**/*.js')
       .pipe($.jshint())
       .pipe($.jshint.reporter(jsReporter));
 });
 
-gulp.task('lint', ['csslint', 'jslint']);
+gulp.task('lint', ['jslint']);
 
 /** serve **/
 
@@ -42,8 +62,21 @@ gulp.task('templates', function(){
              .pipe(gulp.dest('.tmp/dist'));
 });
 
-gulp.task('sample', ['templates'], function(){
-  var files = gulp.src(['src/**/*.js', 'src/**/*.css', 'src/**/*.less', '.tmp/dist/*.js'])
+gulp.task('sample-styles', function(){
+  return gulp.src('src/**/*.scss')
+             .pipe($.sass())
+             .pipe(gulp.dest('.tmp/dist'));
+});
+
+gulp.task('sample', ['sample-styles', 'templates'], function(){
+  var patterns = [
+    'src/**/*.js',
+    'src/**/*.css',
+    '.tmp/dist/*.js',
+    '.tmp/dist/*.css'
+  ];
+
+  var files = gulp.src(patterns)
                   .pipe($.if('*.js', $.angularFilesort()));
 
   gulp.src('sample/index.html')
@@ -73,8 +106,8 @@ gulp.task('serve', ['watch', 'sample'], function(){
 /** build **/
 
 gulp.task('css', function(){
-  gulp.src(['src/**/*.css', 'src/**/*.less'])
-      .pipe($.if('*.less', $.less()))
+  gulp.src(['src/**/*.css', 'src/**/*.scss'])
+      .pipe($.if('*.scss', $.sass()))
       .pipe($.concat(pkg.name + '.css'))
       .pipe(gulp.dest('dist'))
       .pipe($.rename(pkg.name + '.min.css'))

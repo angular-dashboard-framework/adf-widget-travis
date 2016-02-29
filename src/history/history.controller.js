@@ -26,26 +26,14 @@
 
 angular
   .module('adf.widget.travis')
-  .config(RegisterWidgets);
+  .controller('HistoryController', HistoryController);
 
-function RegisterWidgets(dashboardProvider){
-  dashboardProvider
-    .widget('travis-history', {
-      title: 'Travis CI History',
-      description: 'Build history from Travis CI',
-      templateUrl: '{widgetsPath}/travis/src/history/history.html',
-      resolve: {
-        builds: function(Travis, config){
-          if (config.username && config.repository){
-            return Travis.getBuildHistory(config.username, config.repository);
-          }
-          return null;
-        }
-      },
-      controller: 'HistoryController',
-      controllerAs: 'vm',
-      edit: {
-        templateUrl: '{widgetsPath}/travis/src/edit/edit.html'
-      }
-    });
+function HistoryController(builds){
+  var vm = this;
+
+  vm.builds = builds;
+
+  vm.headingClass = function(build){
+    return 'travis-' + build.state;
+  };
 }

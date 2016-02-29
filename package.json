@@ -8,7 +8,9 @@
     "adf-widget"
   ],
   "description": "Build history from Travis CI",
-  "dependencies": {},
+  "dependencies": {
+    "gulp-sass": "^2.2.0"
+  },
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-angular-filesort": "^1.1.1",

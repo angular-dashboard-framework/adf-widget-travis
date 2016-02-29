@@ -21,31 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
-'use strict';
 
-angular
-  .module('adf.widget.travis')
-  .config(RegisterWidgets);
+$success-color: #39aa56;
+$failed-color: #db4545;
 
-function RegisterWidgets(dashboardProvider){
-  dashboardProvider
-    .widget('travis-history', {
-      title: 'Travis CI History',
-      description: 'Build history from Travis CI',
-      templateUrl: '{widgetsPath}/travis/src/history/history.html',
-      resolve: {
-        builds: function(Travis, config){
-          if (config.username && config.repository){
-            return Travis.getBuildHistory(config.username, config.repository);
-          }
-          return null;
-        }
-      },
-      controller: 'HistoryController',
-      controllerAs: 'vm',
-      edit: {
-        templateUrl: '{widgetsPath}/travis/src/edit/edit.html'
-      }
-    });
+@mixin travis($color) {
+  color: $color;
+  :hover {
+    color: inherit;
+  }
+}
+
+a.travis-passed {
+  @include travis($success-color);
+}
+
+a.travis-failed {
+  @include travis($failed-color);
+}
+
+a.travis-errored {
+  @include travis($failed-color);
 }
