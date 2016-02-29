@@ -5,7 +5,10 @@
     "dashboard",
     "widget",
     "adf",
-    "adf-widget"
+    "adf-widget",
+    "travis",
+    "ci",
+    "build"
   ],
   "description": "Build history from Travis CI",
   "dependencies": {
