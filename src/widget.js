@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
+
 'use strict';
 
 angular
@@ -33,6 +33,7 @@ function RegisterWidgets(dashboardProvider){
     .widget('travis-history', {
       title: 'Travis CI History',
       description: 'Build history from Travis CI',
+      category: 'Travis CI',
       templateUrl: '{widgetsPath}/travis/src/history/history.html',
       resolve: {
         builds: function(Travis, config){
