@@ -1,7 +1,10 @@
 {
   "name": "adf-widget-travis",
   "version": "0.1.0",
-  "main": "dist/adf-widget-travis.js",
+  "main": [
+    "dist/adf-widget-travis.js",
+    "dist/adf-widget-travis.css"
+  ],
   "ignore": [
     "bower.json",
     ".bowerrc",
